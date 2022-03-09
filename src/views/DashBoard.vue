@@ -4,19 +4,23 @@
     <div class="text-xl mx-2"><router-link to="/admin/product">後台產品列表</router-link></div>
     <a href="#" class="text-xl mx-2" @click.prevent="logout">登出</a>
   </nav>
-  <router-view />
+  <router-view v-if="checkSuccess" />
 </template>
 
 <script>
 export default {
   name: 'DashBoard',
+  data () {
+    return {
+      checkSuccess: false
+    }
+  },
   methods: {
-    data () {
-      return {
-      }
-    },
     checkLogin () {
       this.$http.post(`${process.env.VUE_APP_API}/api/user/check`)
+        .then(() => {
+          this.checkSuccess = true
+        })
         .catch(err => {
           if (err) {
             alert('您尚未登入')
